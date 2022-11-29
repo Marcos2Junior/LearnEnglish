@@ -6,14 +6,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var config = builder.Configuration;
 // Add services to the container.
-
+Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 string connectionString = config.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<LearnEnglishDbContext>(x =>
                x.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
                builder =>
                {
                    builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-               }));
+               }).EnableSensitiveDataLogging());
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,7 +29,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

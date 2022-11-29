@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnEnglish.API.Migrations
 {
     [DbContext(typeof(LearnEnglishDbContext))]
-    [Migration("20221129154237_Initial")]
+    [Migration("20221129200732_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,9 +37,17 @@ namespace LearnEnglish.API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("TranslateNormalized")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ValueNormalized")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("ID");
 

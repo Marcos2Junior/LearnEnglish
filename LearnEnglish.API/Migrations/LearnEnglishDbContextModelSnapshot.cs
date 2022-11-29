@@ -35,9 +35,17 @@ namespace LearnEnglish.API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("TranslateNormalized")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ValueNormalized")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("ID");
 
