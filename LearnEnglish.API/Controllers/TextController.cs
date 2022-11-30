@@ -1,5 +1,6 @@
 ﻿using LearnEnglish.API.Context;
 using LearnEnglish.API.Entities;
+using LearnEnglish.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -20,27 +21,27 @@ namespace LearnEnglish.API.Controllers
         [HttpGet("filter")]
         public async Task<IActionResult> Get(string? text,bool translated = false)
         {
-            List<Text> result = new();
+            List<TextDto> result = new();
             text = ClearInputText(text);
             if (!string.IsNullOrEmpty(text))
             {
-                result = await FilterAsync(x => translated ? x.TranslateNormalized.Contains(text) : x.ValueNormalized.Contains(text));
+                result = (from r in await FilterAsync(x => translated ? x.TranslateNormalized.Contains(text) : x.ValueNormalized.Contains(text)) select new TextDto(r.Value, r.Translate, r.DateTime)).ToList();
             }
 
             return Ok(result);
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(string value, string translate, int groupId)
+        public async Task<IActionResult> Create(CreateTextDto dto)
         {
             Text text = new()
             {
                 DateTime = DateTime.UtcNow,
-                TextGroupID = groupId,
-                Translate = translate,
-                TranslateNormalized = ClearInputText(translate),
-                Value = value,
-                ValueNormalized = ClearInputText(value),
+                TextGroupID = dto.GroupId,
+                Translate = dto.Translate,
+                TranslateNormalized = ClearInputText(dto.Translate),
+                Value = dto.Value,
+                ValueNormalized = ClearInputText(dto.Value),
             };
 
             if(string.IsNullOrEmpty(text.TranslateNormalized) || string.IsNullOrEmpty(text.ValueNormalized))

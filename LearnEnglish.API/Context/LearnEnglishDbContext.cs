@@ -13,7 +13,6 @@ namespace LearnEnglish.API.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<Text>(entity =>
             {
                 entity.HasKey(builder => builder.ID);
@@ -25,6 +24,8 @@ namespace LearnEnglish.API.Context
                 entity.HasKey(builder => builder.ID);
                 entity.HasIndex(builder => builder.Name).IsUnique(true);
             });
+
+            modelBuilder.Entity<TextGroup>().HasData(new TextGroup { Name = "Indefined", ID = 1 });
         }
     }
 }
