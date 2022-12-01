@@ -67,11 +67,7 @@
             this.Controls.Add(this.txt_translate);
             this.Controls.Add(this.txt_value);
             this.Controls.Add(this.btn_create);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "FrmCreateText";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FrmCreateText";
             this.ResumeLayout(false);
             this.PerformLayout();

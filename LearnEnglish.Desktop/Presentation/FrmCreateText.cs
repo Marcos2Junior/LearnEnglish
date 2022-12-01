@@ -3,7 +3,7 @@ using LearnEnglish.Shared.Dtos;
 
 namespace LearnEnglish.Desktop.Presentation
 {
-    public partial class FrmCreateText : Form
+    public partial class FrmCreateText : BaseForm
     {
         private readonly IHttpService _httpService;
         public FrmCreateText(IHttpService httpService, string text, bool isTranslate)

@@ -1,3 +1,4 @@
+using LearnEnglish.Desktop.Extensions;
 using LearnEnglish.Desktop.Factorys;
 using LearnEnglish.Desktop.Interfaces;
 using LearnEnglish.Shared.Dtos;
@@ -5,7 +6,7 @@ using System.Web;
 
 namespace LearnEnglish.Desktop.Presentation
 {
-    public partial class FrmMain : Form
+    public partial class FrmMain : BaseForm
     {
         private bool isTranslated = true;
         private readonly IHttpService _httpService;
@@ -45,20 +46,16 @@ namespace LearnEnglish.Desktop.Presentation
         {
             _frmCreateTextFactory.Create(txt_filter.Text, isTranslated).ShowDialog();
         }
+     
 
-        private async void txt_filter_TextUpdate(object sender, EventArgs e)
-        {
-           
-        }
-
-        private async void txt_filter_KeyDown(object sender, KeyEventArgs e)
+        private async void txt_filter_TextChanged(object sender, EventArgs e)
         {
             var result = await _httpService.GetAsync<List<TextDto>>($"api/text/filter?text={HttpUtility.UrlEncode(txt_filter.Text)}&translated={isTranslated}");
-            BindingSource bs = new()
+            dg_result.Rows.Clear();
+            foreach (var item in result)
             {
-                DataSource = (from r in result select isTranslated ? r.Value : r.Translate).ToList()
-            };
-            txt_filter.DataSource = bs;
+                dg_result.Rows[dg_result.Rows.Add()].Cells[0].Value = isTranslated ? item.Value : item.Translate;
+            }
         }
     }
 }
