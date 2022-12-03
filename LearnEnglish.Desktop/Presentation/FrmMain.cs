@@ -49,18 +49,23 @@ namespace LearnEnglish.Desktop.Presentation
             _frmCreateTextFactory.Create(txt_filter.Text, isTranslated).ShowDialog();
         }
 
-
+        CancellationTokenSource cts;
         private async void txt_filter_TextChanged(object sender, EventArgs e)
         {
-            var result = await _httpService.GetAsync<List<TextDto>>($"api/text/filter?text={HttpUtility.UrlEncode(txt_filter.Text)}&translated={isTranslated}");
             dg_result.Rows.Clear();
-            foreach (var item in result)
+            cts?.Cancel();
+            cts = new CancellationTokenSource();
+            var result = await _httpService.GetAsync<List<TextDto>>($"api/text/filter?text={HttpUtility.UrlEncode(txt_filter.Text)}&translated={isTranslated}", cts.Token);
+            if(result != null)
             {
-                int index = dg_result.Rows.Add();
-                dg_result.Rows[index].Cells[column_value.Name].Value = item.Value;
-                dg_result.Rows[index].Cells[column_translate.Name].Value = item.Translate;
-                dg_result.Rows[index].Cells[column_last_update.Name].Value = item.CreationDate.ToLocalTime();
-                dg_result.Rows[index].Cells[column_details.Name].Value = "Edit";
+                foreach (var item in result)
+                {
+                    int index = dg_result.Rows.Add();
+                    dg_result.Rows[index].Cells[column_value.Name].Value = item.Value;
+                    dg_result.Rows[index].Cells[column_translate.Name].Value = item.Translate;
+                    dg_result.Rows[index].Cells[column_last_update.Name].Value = item.CreationDate.ToLocalTime();
+                    dg_result.Rows[index].Cells[column_details.Name].Value = "Edit";
+                }
             }
         }
     }

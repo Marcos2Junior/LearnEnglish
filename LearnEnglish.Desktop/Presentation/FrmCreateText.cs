@@ -27,7 +27,7 @@ namespace LearnEnglish.Desktop.Presentation
 
         private async void btn_create_Click(object sender, EventArgs e)
         {
-            bool result = await _httpService.PostAsync("api/text/create", new CreateTextDto(txt_value.Text, txt_translate.Text));
+            bool result = await _httpService.PostAsync("api/text/create", new CreateTextDto(txt_value.Text, txt_translate.Text), new CancellationToken());
             if (result)
             {
                 DialogResult = DialogResult.OK;
