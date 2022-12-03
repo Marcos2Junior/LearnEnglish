@@ -45,18 +45,18 @@
             // 
             // txt_value
             // 
+            this.txt_value.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txt_value.Location = new System.Drawing.Point(12, 48);
             this.txt_value.Name = "txt_value";
-            this.txt_value.PlaceholderText = "Text in English";
-            this.txt_value.Size = new System.Drawing.Size(331, 23);
+            this.txt_value.Size = new System.Drawing.Size(331, 16);
             this.txt_value.TabIndex = 1;
             // 
             // txt_translate
             // 
+            this.txt_translate.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txt_translate.Location = new System.Drawing.Point(12, 99);
             this.txt_translate.Name = "txt_translate";
-            this.txt_translate.PlaceholderText = "Text in Portuguese";
-            this.txt_translate.Size = new System.Drawing.Size(331, 23);
+            this.txt_translate.Size = new System.Drawing.Size(331, 16);
             this.txt_translate.TabIndex = 2;
             // 
             // FrmCreateText
@@ -67,8 +67,12 @@
             this.Controls.Add(this.txt_translate);
             this.Controls.Add(this.txt_value);
             this.Controls.Add(this.btn_create);
+            this.ForeColor = System.Drawing.Color.White;
             this.Name = "FrmCreateText";
             this.Text = "FrmCreateText";
+            this.Controls.SetChildIndex(this.btn_create, 0);
+            this.Controls.SetChildIndex(this.txt_value, 0);
+            this.Controls.SetChildIndex(this.txt_translate, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 

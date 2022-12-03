@@ -1,4 +1,5 @@
 ﻿using LearnEnglish.Desktop.Extensions;
+using LearnEnglish.Desktop.Theme;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,7 @@ namespace LearnEnglish.Desktop.Presentation
         private Point dragCursorPoint;
         private Point dragFormPoint;
 
+        public ITheme Theme = new DarkTheme();
         public BaseForm()
         {
             InitializeComponent();
@@ -24,6 +26,8 @@ namespace LearnEnglish.Desktop.Presentation
             p_navigate.MouseDown += MouseDownEvent;
             p_navigate.MouseUp += MouseUpEvent;
         }
+
+        private static Color HexToColor(string hex) => (Color)new ColorConverter().ConvertFromString(hex);
 
         private void MouseMoveEvent(object sender, MouseEventArgs e)
         {
@@ -47,6 +51,48 @@ namespace LearnEnglish.Desktop.Presentation
         private void BaseForm_Load(object sender, EventArgs e)
         {
             this.RoundBorder();
+            SetTheme();
+        }
+
+        private void btn_minimize_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void btn_theme_Click(object sender, EventArgs e)
+        {
+            Theme = Theme.GetType().Equals(typeof(DarkTheme)) ? new LightTheme() : new DarkTheme();
+            SetTheme();
+        }
+        protected virtual void SetTheme()
+        {
+            BackColor = HexToColor(Theme.BackGroundSecondary);
+            ForeColor = HexToColor(Theme.ForeColorPrimary);
+            p_navigate.BackColor = HexToColor(Theme.BackGroundPrimary);
+            DefineThemeAllControls(this);
+        }
+
+        public void DefineThemeAllControls(Control rootControl)
+        {
+            foreach (Control control in rootControl.Controls)
+            {
+                if (control is Button || control is TextBox)
+                {
+                    control.BackColor = HexToColor(Theme.BackGroundInput);
+                    control.ForeColor = HexToColor(Theme.ForeColorInput);
+                }
+                else if (control is Label)
+                {
+                    control.ForeColor = HexToColor(Theme.ForeColorPrimary);
+                }
+                else if (control.Controls != null)
+                {
+                    foreach (Control child in control.Controls)
+                    {
+                        DefineThemeAllControls(child);
+                    }
+                }
+            }
         }
     }
 }

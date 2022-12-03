@@ -29,25 +29,47 @@
         private void InitializeComponent()
         {
             this.p_navigate = new System.Windows.Forms.Panel();
+            this.btn_theme = new System.Windows.Forms.Button();
+            this.btn_minimize = new System.Windows.Forms.Button();
+            this.p_navigate.SuspendLayout();
             this.SuspendLayout();
             // 
             // p_navigate
             // 
-            this.p_navigate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(42)))), ((int)(((byte)(43)))));
+            this.p_navigate.Controls.Add(this.btn_theme);
+            this.p_navigate.Controls.Add(this.btn_minimize);
             this.p_navigate.Dock = System.Windows.Forms.DockStyle.Top;
             this.p_navigate.Location = new System.Drawing.Point(0, 0);
             this.p_navigate.Name = "p_navigate";
-            this.p_navigate.Size = new System.Drawing.Size(800, 22);
+            this.p_navigate.Size = new System.Drawing.Size(800, 33);
             this.p_navigate.TabIndex = 8;
+            // 
+            // btn_theme
+            // 
+            this.btn_theme.Location = new System.Drawing.Point(664, 6);
+            this.btn_theme.Name = "btn_theme";
+            this.btn_theme.Size = new System.Drawing.Size(76, 19);
+            this.btn_theme.TabIndex = 10;
+            this.btn_theme.Text = "Theme";
+            this.btn_theme.UseVisualStyleBackColor = true;
+            this.btn_theme.Click += new System.EventHandler(this.btn_theme_Click);
+            // 
+            // btn_minimize
+            // 
+            this.btn_minimize.Location = new System.Drawing.Point(761, 6);
+            this.btn_minimize.Name = "btn_minimize";
+            this.btn_minimize.Size = new System.Drawing.Size(22, 19);
+            this.btn_minimize.TabIndex = 9;
+            this.btn_minimize.Text = "_";
+            this.btn_minimize.UseVisualStyleBackColor = true;
+            this.btn_minimize.Click += new System.EventHandler(this.btn_minimize_Click);
             // 
             // BaseForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(57)))), ((int)(((byte)(59)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.p_navigate);
-            this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.MaximizeBox = false;
@@ -55,6 +77,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BaseForm";
             this.Load += new System.EventHandler(this.BaseForm_Load);
+            this.p_navigate.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -62,5 +85,7 @@
         #endregion
 
         private Panel p_navigate;
+        private Button btn_theme;
+        private Button btn_minimize;
     }
 }

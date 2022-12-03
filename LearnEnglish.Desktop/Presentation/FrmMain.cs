@@ -17,6 +17,7 @@ namespace LearnEnglish.Desktop.Presentation
             _httpService = httpService;
             _frmCreateTextFactory = frmCreateTextFactory;
             InitializeComponent();
+            dg_result.RoundBorder();
         }
 
         private void btn_change_translate_Click(object sender, EventArgs e) => ChangeTranslate();
@@ -40,13 +41,14 @@ namespace LearnEnglish.Desktop.Presentation
         private void FrmMain_Load(object sender, EventArgs e)
         {
             ChangeTranslate();
+            txt_filter.Select();
         }
 
         private void btn_create_Click(object sender, EventArgs e)
         {
             _frmCreateTextFactory.Create(txt_filter.Text, isTranslated).ShowDialog();
         }
-     
+
 
         private async void txt_filter_TextChanged(object sender, EventArgs e)
         {
@@ -54,7 +56,11 @@ namespace LearnEnglish.Desktop.Presentation
             dg_result.Rows.Clear();
             foreach (var item in result)
             {
-                dg_result.Rows[dg_result.Rows.Add()].Cells[0].Value = isTranslated ? item.Value : item.Translate;
+                int index = dg_result.Rows.Add();
+                dg_result.Rows[index].Cells[column_value.Name].Value = item.Value;
+                dg_result.Rows[index].Cells[column_translate.Name].Value = item.Translate;
+                dg_result.Rows[index].Cells[column_last_update.Name].Value = item.CreationDate.ToLocalTime();
+                dg_result.Rows[index].Cells[column_details.Name].Value = "Edit";
             }
         }
     }
