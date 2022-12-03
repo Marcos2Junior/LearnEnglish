@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btn_change_translate = new System.Windows.Forms.Button();
             this.btn_create = new System.Windows.Forms.Button();
             this.lbl_description = new System.Windows.Forms.Label();
@@ -37,7 +39,6 @@
             this.column_value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.column_translate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.column_last_update = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.column_details = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dg_result)).BeginInit();
             this.SuspendLayout();
             // 
@@ -103,24 +104,39 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dg_result.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dg_result.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dg_result.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dg_result.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.column_value,
-            this.column_translate,
-            this.column_last_update,
-            this.column_details});
-            this.dg_result.GridColor = System.Drawing.SystemColors.Control;
-            this.dg_result.Location = new System.Drawing.Point(22, 104);
-            this.dg_result.Name = "dg_result";
-            this.dg_result.ReadOnly = true;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dg_result.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dg_result.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dg_result.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dg_result.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.column_value,
+            this.column_translate,
+            this.column_last_update});
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.AppWorkspace;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dg_result.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dg_result.GridColor = System.Drawing.SystemColors.Control;
+            this.dg_result.Location = new System.Drawing.Point(22, 104);
+            this.dg_result.Name = "dg_result";
+            this.dg_result.ReadOnly = true;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dg_result.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dg_result.RowHeadersVisible = false;
             this.dg_result.RowTemplate.Height = 25;
             this.dg_result.Size = new System.Drawing.Size(730, 134);
@@ -147,13 +163,6 @@
             this.column_last_update.ReadOnly = true;
             this.column_last_update.Width = 145;
             // 
-            // column_details
-            // 
-            this.column_details.HeaderText = "";
-            this.column_details.Name = "column_details";
-            this.column_details.ReadOnly = true;
-            this.column_details.Width = 146;
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -165,6 +174,7 @@
             this.Controls.Add(this.lbl_description);
             this.Controls.Add(this.btn_create);
             this.Controls.Add(this.btn_change_translate);
+            this.ForeColor = System.Drawing.Color.White;
             this.Name = "FrmMain";
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.Controls.SetChildIndex(this.btn_change_translate, 0);
@@ -187,6 +197,5 @@
         private DataGridViewTextBoxColumn column_value;
         private DataGridViewTextBoxColumn column_translate;
         private DataGridViewTextBoxColumn column_last_update;
-        private DataGridViewButtonColumn column_details;
     }
 }

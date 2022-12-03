@@ -1,4 +1,7 @@
 ﻿using LearnEnglish.Desktop.Extensions;
+using LearnEnglish.Desktop.Helpers;
+using LearnEnglish.Desktop.Properties;
+using LearnEnglish.Desktop.Services;
 using LearnEnglish.Desktop.Theme;
 using System;
 using System.Collections.Generic;
@@ -16,9 +19,9 @@ namespace LearnEnglish.Desktop.Presentation
     {
         private bool dragging = false;
         private Point dragCursorPoint;
-        private Point dragFormPoint;
+        private Point dragFormPoint; //#676767
 
-        public ITheme Theme = new DarkTheme();
+        public ITheme Theme;
         public BaseForm()
         {
             InitializeComponent();
@@ -48,27 +51,26 @@ namespace LearnEnglish.Desktop.Presentation
             dragging = false;
         }
 
-        private void BaseForm_Load(object sender, EventArgs e)
+        private async void BaseForm_Load(object sender, EventArgs e)
         {
             this.RoundBorder();
+
+            if(LocalStorage.Instancia.LocalStorageInfo.IsDarkMode == null)
+            {
+                LocalStorage.Instancia.LocalStorageInfo.IsDarkMode = DefaultThemeOS.IsDarkMode();
+                await LocalStorage.Instancia.SaveChangesAsync();
+            }
+            Theme = LocalStorage.Instancia.LocalStorageInfo.IsDarkMode == true ? new DarkTheme() : new LightTheme();
+
             SetTheme();
         }
-
-        private void btn_minimize_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void btn_theme_Click(object sender, EventArgs e)
-        {
-            Theme = Theme.GetType().Equals(typeof(DarkTheme)) ? new LightTheme() : new DarkTheme();
-            SetTheme();
-        }
+       
         protected virtual void SetTheme()
         {
             BackColor = HexToColor(Theme.BackGroundSecondary);
             ForeColor = HexToColor(Theme.ForeColorPrimary);
             p_navigate.BackColor = HexToColor(Theme.BackGroundPrimary);
+            btn_theme.Image = LocalStorage.Instancia.LocalStorageInfo.IsDarkMode == true ? Resources.sun_icon : Resources.moon_icon;
             DefineThemeAllControls(this);
         }
 
@@ -85,6 +87,16 @@ namespace LearnEnglish.Desktop.Presentation
                 {
                     control.ForeColor = HexToColor(Theme.ForeColorPrimary);
                 }
+                else if(control is DataGridView dg)
+                {
+                    dg.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                    dg.ColumnHeadersDefaultCellStyle.BackColor = HexToColor(Theme.BackGroundPrimary);
+                    dg.ColumnHeadersDefaultCellStyle.ForeColor = HexToColor(Theme.ForeColorPrimary);
+                    dg.ColumnHeadersDefaultCellStyle.Font = new Font(dg.ColumnHeadersDefaultCellStyle.Font.FontFamily, 12);
+                    dg.DefaultCellStyle.ForeColor = HexToColor(Theme.ForeColorInput);
+                    dg.DefaultCellStyle.BackColor = HexToColor(Theme.BackGroundInput);
+                    dg.BackgroundColor = HexToColor(Theme.BackGroundInput);
+                }
                 else if (control.Controls != null)
                 {
                     foreach (Control child in control.Controls)
@@ -93,6 +105,34 @@ namespace LearnEnglish.Desktop.Presentation
                     }
                 }
             }
+        }
+
+        private void btn_close_Click(object sender, EventArgs e)
+        {
+            Close();
+
+        }
+
+        private async void btn_theme_Click(object sender, EventArgs e)
+        {
+            if (LocalStorage.Instancia.LocalStorageInfo.IsDarkMode == true)
+            {
+                LocalStorage.Instancia.LocalStorageInfo.IsDarkMode = false;
+                Theme = new LightTheme();
+            }
+            else
+            {
+                LocalStorage.Instancia.LocalStorageInfo.IsDarkMode = true;
+                Theme = new DarkTheme();
+            }
+
+            await LocalStorage.Instancia.SaveChangesAsync();
+            SetTheme();
+        }
+
+        private void btn_info_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
