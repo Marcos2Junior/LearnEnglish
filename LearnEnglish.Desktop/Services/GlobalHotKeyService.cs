@@ -2,6 +2,7 @@
 using LearnEnglish.Desktop.Helpers;
 using LearnEnglish.Desktop.Models;
 using LearnEnglish.Desktop.Presentation;
+using System.Runtime.CompilerServices;
 
 namespace LearnEnglish.Desktop.Services
 {
@@ -9,7 +10,8 @@ namespace LearnEnglish.Desktop.Services
     {
         private GlobalKeyboardHook _globalKeyboardHook;
         public List<HotKeyAttribute> HotKeys;
-        private List<Tuple<Keys, DateTime>> LastPressedKeys = new();
+        private List<PressedKeys> LastPressedKeys = new();
+        private Form _mainForm;
         private GlobalHotKeyService()
         {
             _globalKeyboardHook = new GlobalKeyboardHook();
@@ -36,47 +38,65 @@ namespace LearnEnglish.Desktop.Services
         {
             if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown)
             {
-                HotKeyMatch(e.KeyboardData.Key);
+                if (_mainForm == null)
+                {
+                    _mainForm = Application.OpenForms[nameof(FrmMain)];
+                }
+
+                if (_mainForm?.Visible == false)
+                {
+                    if (HotKeyMatch(e.KeyboardData.Key) == HotKeyType.Show)
+                    {
+                        _mainForm.Show();
+                    }
+                }
             }
         }
 
-        public HotKeyType? HotKeyMatch(Keys keyPressed)
+        public HotKeyType? HotKeyMatch(Keys keyPressed, [CallerMemberName] string call = "")
         {
-            LastPressedKeys.Add(new Tuple<Keys, DateTime>(keyPressed, DateTime.Now));
-            LastPressedKeys.RemoveAll(x => x.Item2.AddSeconds(1) < DateTime.Now);
-
+            LastPressedKeys.Add(new PressedKeys(keyPressed, call));
+            LastPressedKeys.RemoveAll(x => x.Date.AddSeconds(5) < DateTime.Now);
             HotKeyType? hotKeyMatch = null;
+
+            var LastPressedKeysSameOrigin = LastPressedKeys.Where(x => x.Call == call);
             foreach (var hotKey in HotKeys)
             {
                 //for hotkey with 1 key
-                if (hotKey.Key2 == Keys.None && hotKey.Key3 == Keys.None && hotKey.Key1 == LastPressedKeys.Last().Item1)
+                if (hotKey.Key2 == Keys.None && hotKey.Key3 == Keys.None && hotKey.Key1 == keyPressed)
                 {
                     hotKeyMatch = hotKey.HotKeyType;
                     break;
                 }
                 //for hotkey with 2 key
-                else if (hotKey.Key2 != Keys.None && hotKey.Key3 == Keys.None && LastPressedKeys.Count() > 1 && LastPressedKeys.Last().Item1 == hotKey.Key2 && LastPressedKeys.SkipLast(1).Last().Item1 == hotKey.Key1)
+                else if (hotKey.Key2 != Keys.None && hotKey.Key3 == Keys.None && LastPressedKeysSameOrigin.Count() > 1 && keyPressed == hotKey.Key2 && LastPressedKeysSameOrigin.SkipLast(1).Last().Key == hotKey.Key1)
                 {
                     hotKeyMatch = hotKey.HotKeyType;
                     break;
                 }
                 //for hotkey with 3 key
-                else if (hotKey.Key3 != Keys.None && LastPressedKeys.Count() > 2 && LastPressedKeys.Last().Item1 == hotKey.Key3 && LastPressedKeys.SkipLast(1).Last().Item1 == hotKey.Key2 && LastPressedKeys.SkipLast(2).Last().Item1 == hotKey.Key1)
+                else if (hotKey.Key3 != Keys.None && LastPressedKeysSameOrigin.Count() > 2 && keyPressed == hotKey.Key3 && LastPressedKeysSameOrigin.SkipLast(1).Last().Key == hotKey.Key2 && LastPressedKeysSameOrigin.SkipLast(2).Last().Key == hotKey.Key1)
                 {
                     hotKeyMatch = hotKey.HotKeyType;
                     break;
                 }
             }
 
-            if (hotKeyMatch == HotKeyType.Show)
-            {
-                var frmMain = Application.OpenForms[nameof(FrmMain)];
-                if (!frmMain.Visible)
-                {
-                    frmMain.Show();
-                }
-            }
             return hotKeyMatch;
+        }
+
+        class PressedKeys
+        {
+            public string Call { get; private set; }
+            public Keys Key { get; private set; }
+            public DateTime Date { get; private set; }
+            public PressedKeys(Keys key, string call)
+            {
+                Key = key;
+                Date = DateTime.Now;
+                Call = call;
+            }
+
         }
     }
 }
