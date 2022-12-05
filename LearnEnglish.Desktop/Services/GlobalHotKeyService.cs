@@ -55,8 +55,9 @@ namespace LearnEnglish.Desktop.Services
 
         public HotKeyType? HotKeyMatch(Keys keyPressed, [CallerMemberName] string call = "")
         {
+            keyPressed = (Keys)keyPressed.ToAvailableKey();
             LastPressedKeys.Add(new PressedKeys(keyPressed, call));
-            LastPressedKeys.RemoveAll(x => x.Date.AddSeconds(5) < DateTime.Now);
+            LastPressedKeys.RemoveAll(x => x.Date.AddSeconds(1) < DateTime.Now);
             HotKeyType? hotKeyMatch = null;
 
             var LastPressedKeysSameOrigin = LastPressedKeys.Where(x => x.Call == call);
