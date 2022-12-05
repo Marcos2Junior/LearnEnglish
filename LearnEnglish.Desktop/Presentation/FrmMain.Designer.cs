@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.btn_change_translate = new System.Windows.Forms.Button();
             this.btn_create = new System.Windows.Forms.Button();
             this.lbl_description = new System.Windows.Forms.Label();
@@ -39,6 +41,7 @@
             this.column_value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.column_translate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.column_last_update = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dg_result)).BeginInit();
             this.SuspendLayout();
             // 
@@ -95,6 +98,7 @@
             this.txt_filter.Size = new System.Drawing.Size(730, 22);
             this.txt_filter.TabIndex = 5;
             this.txt_filter.TextChanged += new System.EventHandler(this.txt_filter_TextChanged);
+            this.txt_filter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_filter_KeyDown);
             // 
             // dg_result
             // 
@@ -163,6 +167,14 @@
             this.column_last_update.ReadOnly = true;
             this.column_last_update.Width = 145;
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.BalloonTipText = "Learn English";
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "Learn English";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.Click += new System.EventHandler(this.notifyIcon1_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -176,7 +188,10 @@
             this.Controls.Add(this.btn_change_translate);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "FrmMain";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.FrmMain_Load);
+            this.VisibleChanged += new System.EventHandler(this.FrmMain_VisibleChanged);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmMain_KeyDown);
             this.Controls.SetChildIndex(this.btn_change_translate, 0);
             this.Controls.SetChildIndex(this.btn_create, 0);
             this.Controls.SetChildIndex(this.lbl_description, 0);
@@ -197,5 +212,6 @@
         private DataGridViewTextBoxColumn column_value;
         private DataGridViewTextBoxColumn column_translate;
         private DataGridViewTextBoxColumn column_last_update;
+        private NotifyIcon notifyIcon1;
     }
 }

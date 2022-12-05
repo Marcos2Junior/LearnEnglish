@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+﻿using LearnEnglish.Desktop.Models;
 using System.Text.Json;
 
 namespace LearnEnglish.Desktop.Services
@@ -11,7 +11,7 @@ namespace LearnEnglish.Desktop.Services
 
         public async Task SaveChangesAsync()
         {
-            await File.WriteAllTextAsync(FileInfoLocalStorage, JsonSerializer.Serialize(LocalStorageInfo, new JsonSerializerOptions { WriteIndented = true }));
+            await File.WriteAllTextAsync(FileInfoLocalStorage, JsonSerializer.Serialize(LocalStorageInfo, new JsonSerializerOptions { WriteIndented = true, IgnoreReadOnlyProperties = true }));
         }
 
         private static LocalStorage _instancia;
@@ -44,5 +44,6 @@ namespace LearnEnglish.Desktop.Services
     public class LocalStorageInfo
     {
         public bool? IsDarkMode { get; set; }
+        public List<HotKeyAttribute> HotKeys { get; set; } = new List<HotKeyAttribute>();
     }
 }

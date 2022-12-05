@@ -1,17 +1,9 @@
 ﻿using LearnEnglish.Desktop.Extensions;
 using LearnEnglish.Desktop.Helpers;
+using LearnEnglish.Desktop.Models;
 using LearnEnglish.Desktop.Properties;
 using LearnEnglish.Desktop.Services;
 using LearnEnglish.Desktop.Theme;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace LearnEnglish.Desktop.Presentation
 {
@@ -19,9 +11,9 @@ namespace LearnEnglish.Desktop.Presentation
     {
         private bool dragging = false;
         private Point dragCursorPoint;
-        private Point dragFormPoint; //#676767
-
+        private Point dragFormPoint;
         public ITheme Theme;
+
         public BaseForm()
         {
             InitializeComponent();
@@ -53,9 +45,19 @@ namespace LearnEnglish.Desktop.Presentation
 
         private async void BaseForm_Load(object sender, EventArgs e)
         {
+            if (this is not FrmMain)
+            {
+                btn_theme.Visible = false;
+                lbl_title.Text = $"Learn English - {Text}";
+            }
+            if (this is FrmInfo)
+            {
+                btn_info.Visible = false;
+            }
+
             this.RoundBorder();
 
-            if(LocalStorage.Instancia.LocalStorageInfo.IsDarkMode == null)
+            if (LocalStorage.Instancia.LocalStorageInfo.IsDarkMode == null)
             {
                 LocalStorage.Instancia.LocalStorageInfo.IsDarkMode = DefaultThemeOS.IsDarkMode();
                 await LocalStorage.Instancia.SaveChangesAsync();
@@ -64,7 +66,7 @@ namespace LearnEnglish.Desktop.Presentation
 
             SetTheme();
         }
-       
+
         protected virtual void SetTheme()
         {
             BackColor = HexToColor(Theme.BackGroundSecondary);
@@ -87,7 +89,7 @@ namespace LearnEnglish.Desktop.Presentation
                 {
                     control.ForeColor = HexToColor(Theme.ForeColorPrimary);
                 }
-                else if(control is DataGridView dg)
+                else if (control is DataGridView dg)
                 {
                     dg.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                     dg.ColumnHeadersDefaultCellStyle.BackColor = HexToColor(Theme.BackGroundPrimary);
@@ -115,6 +117,11 @@ namespace LearnEnglish.Desktop.Presentation
 
         private async void btn_theme_Click(object sender, EventArgs e)
         {
+            await ChangeThemeAsync();
+        }
+
+        private async Task ChangeThemeAsync()
+        {
             if (LocalStorage.Instancia.LocalStorageInfo.IsDarkMode == true)
             {
                 LocalStorage.Instancia.LocalStorageInfo.IsDarkMode = false;
@@ -132,7 +139,22 @@ namespace LearnEnglish.Desktop.Presentation
 
         private void btn_info_Click(object sender, EventArgs e)
         {
+            new FrmInfo().ShowDialog();
+        }
 
+        private async void BaseForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (GlobalHotKeyService.Instancia.HotKeyMatch(e.KeyCode))
+            {
+                case Models.HotKeyType.Close:
+                    Close();
+                    break;
+                case HotKeyType.ChangeTheme:
+                    await ChangeThemeAsync();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

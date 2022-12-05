@@ -1,6 +1,7 @@
 using LearnEnglish.Desktop.Extensions;
 using LearnEnglish.Desktop.Factorys;
 using LearnEnglish.Desktop.Interfaces;
+using LearnEnglish.Desktop.Services;
 using LearnEnglish.Shared.Dtos;
 using System.Web;
 
@@ -27,7 +28,6 @@ namespace LearnEnglish.Desktop.Presentation
             dg_result.Columns[column_value.Name].Width = widthValue;
             dg_result.Columns[column_translate.Name].Width = widthTranslate;
             dg_result.Columns[column_last_update.Name].Width = widthLastUpdate;
-
         }
 
         private void btn_change_translate_Click(object sender, EventArgs e) => ChangeTranslate();
@@ -46,17 +46,21 @@ namespace LearnEnglish.Desktop.Presentation
                 lbl_description.Text = $"{description}English?";
                 btn_change_translate.Text = "English to Portuguese";
             }
+
+            txt_filter.Select();
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
             ChangeTranslate();
-            txt_filter.Select();
         }
 
-        private void btn_create_Click(object sender, EventArgs e)
+        private void btn_create_Click(object sender, EventArgs e) => CreateNewTranslate();
+
+        private void CreateNewTranslate()
         {
             _frmCreateTextFactory.Create(txt_filter.Text, isTranslated).ShowDialog();
+
         }
 
         private async void txt_filter_TextChanged(object sender, EventArgs e)
@@ -74,6 +78,48 @@ namespace LearnEnglish.Desktop.Presentation
                     dg_result.Rows[index].Cells[column_translate.Name].Value = item.Translate;
                     dg_result.Rows[index].Cells[column_last_update.Name].Value = item.CreationDate.ToLocalTime();
                 }
+            }
+        }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            Hide();
+        }
+
+        private void notifyIcon1_Click(object sender, EventArgs e)
+        {
+            Show();
+        }
+
+        private void txt_filter_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape || e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void FrmMain_VisibleChanged(object sender, EventArgs e)
+        {
+            if (Visible)
+            {
+                txt_filter.Select();
+            }
+        }
+
+        private void FrmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (GlobalHotKeyService.Instancia.HotKeyMatch(e.KeyCode))
+            {
+                case Models.HotKeyType.ChangeTranslate:
+                    ChangeTranslate();
+                    break;
+                case Models.HotKeyType.CreateNewTranslate:
+                    CreateNewTranslate();
+                    break;
+                default:
+                    break;
             }
         }
     }

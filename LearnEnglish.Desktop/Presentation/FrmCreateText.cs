@@ -10,6 +10,7 @@ namespace LearnEnglish.Desktop.Presentation
         {
             _httpService = httpService;
             InitializeComponent();
+            Text = "New Translate";
             if (!string.IsNullOrEmpty(text))
             {
                 if (isTranslate)
