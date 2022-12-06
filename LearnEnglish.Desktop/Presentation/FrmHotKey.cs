@@ -1,16 +1,6 @@
-﻿using LearnEnglish.Desktop.Extensions;
-using LearnEnglish.Desktop.Models;
+﻿using LearnEnglish.Desktop.Models;
 using LearnEnglish.Desktop.Presentation.UserControls;
 using LearnEnglish.Desktop.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace LearnEnglish.Desktop.Presentation
 {
@@ -20,10 +10,33 @@ namespace LearnEnglish.Desktop.Presentation
         public FrmHotKey()
         {
             InitializeComponent();
+            Text = "Keyboard shortcuts";
         }
 
         private void FrmHotKey_Load(object sender, EventArgs e)
         {
+            LoadForm();
+        }
+
+        private async void btn_save_changes_Click(object sender, EventArgs e)
+        {
+            GlobalHotKeyService.Instancia.HotKeys = new List<HotKeyAttribute>(_hotKeys);
+            LocalStorage.Instancia.LocalStorageInfo.HotKeys = GlobalHotKeyService.Instancia.HotKeys;
+            await LocalStorage.Instancia.SaveChangesAsync();
+            MessageBox.Show("Hotkeys updated successfully", string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btn_add_key_Click(object sender, EventArgs e)
+        {
+            if(new FrmNewKey().ShowDialog() == DialogResult.OK)
+            {
+                LoadForm();
+            }
+        }
+
+        private void LoadForm()
+        {
+            p_main.Controls.Clear();
             foreach (HotKeyAttribute hotkey in GlobalHotKeyService.Instancia.HotKeys)
             {
                 var newHotKey = new HotKeyAttribute(hotkey.HotKeyType, hotkey.DescriptionKey, hotkey.Key1, hotkey.Key2, hotkey.Key3);
@@ -35,14 +48,6 @@ namespace LearnEnglish.Desktop.Presentation
                 };
                 p_main.Controls.Add(control);
             }
-        }
-
-        private async void btn_save_changes_Click(object sender, EventArgs e)
-        {
-            GlobalHotKeyService.Instancia.HotKeys = new List<HotKeyAttribute>(_hotKeys);
-            LocalStorage.Instancia.LocalStorageInfo.HotKeys = GlobalHotKeyService.Instancia.HotKeys;
-            await LocalStorage.Instancia.SaveChangesAsync();
-            MessageBox.Show("Hotkeys updated successfully", string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

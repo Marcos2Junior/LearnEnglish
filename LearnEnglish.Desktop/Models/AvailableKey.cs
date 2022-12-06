@@ -3,13 +3,14 @@
     public enum AvailableKey
     {
         None = Keys.None,
-        Control = Keys.ControlKey,
-        Shift = Keys.ShiftKey,
+        Control = Keys.Control,
+        Shift = Keys.Shift,
         Tab = Keys.Tab,
         CapsLock = Keys.CapsLock,
         Alt = Keys.Alt,
         Space = Keys.Space,
         Esc = Keys.Escape,
+        Enter = Keys.Enter,
         F1 = Keys.F1,
         F2 = Keys.F2,
         F3 = Keys.F3,

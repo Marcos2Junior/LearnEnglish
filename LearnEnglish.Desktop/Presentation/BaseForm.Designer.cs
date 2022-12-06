@@ -115,6 +115,8 @@
             this.Name = "BaseForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BaseForm";
+            this.Activated += new System.EventHandler(this.BaseForm_Activated);
+            this.Deactivate += new System.EventHandler(this.BaseForm_Deactivate);
             this.Load += new System.EventHandler(this.BaseForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.BaseForm_KeyDown);
             this.p_navigate.ResumeLayout(false);

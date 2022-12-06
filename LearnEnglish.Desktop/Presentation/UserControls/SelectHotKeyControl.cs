@@ -1,4 +1,5 @@
 ﻿using LearnEnglish.Desktop.Models;
+using LearnEnglish.Desktop.Services;
 using System.Globalization;
 
 namespace LearnEnglish.Desktop.Presentation.UserControls
@@ -23,9 +24,13 @@ namespace LearnEnglish.Desktop.Presentation.UserControls
         private void LoadCombo(ComboBox comboBox, Keys? keySelected)
         {
             List<ComboKeyModel> comboKeys = new List<ComboKeyModel>();
-            foreach (Keys key in Enum.GetValues(typeof(Keys)))
+            foreach (AvailableKey key in Enum.GetValues(typeof(AvailableKey)))
             {
-                comboKeys.Add(new ComboKeyModel { KeyDescription = key.ToString(), Value = key });
+                comboKeys.Add(new ComboKeyModel { KeyDescription = key.ToString(), Value = (Keys)key });
+            }
+            foreach (var item in LocalStorage.Instancia.LocalStorageInfo.CustomKeys)
+            {
+                comboKeys.Add(new ComboKeyModel { KeyDescription = item.Description, Value = item.Key });
             }
 
             comboBox.DataSource = comboKeys;
@@ -52,7 +57,19 @@ namespace LearnEnglish.Desktop.Presentation.UserControls
             HotKey.Key1 = ConvertKey(cb_1.SelectedItem);
         }
 
-        private Keys ConvertKey(object obj) => ((ComboKeyModel)obj).Value;
+        private Keys ConvertKey(object obj)
+        {
+
+            try
+            {
+                return ((ComboKeyModel)obj).Value;
+
+            }
+            catch (Exception ex)
+            {
+                return Keys.None;
+            }
+        }
 
         private void cb_2_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -20,6 +20,10 @@ namespace LearnEnglish.Desktop.Presentation
             p_navigate.MouseMove += MouseMoveEvent;
             p_navigate.MouseDown += MouseDownEvent;
             p_navigate.MouseUp += MouseUpEvent;
+
+            lbl_title.MouseMove += MouseMoveEvent;
+            lbl_title.MouseDown += MouseDownEvent;
+            lbl_title.MouseUp += MouseUpEvent;
         }
 
         private static Color HexToColor(string hex) => (Color)new ColorConverter().ConvertFromString(hex);
@@ -50,7 +54,7 @@ namespace LearnEnglish.Desktop.Presentation
                 btn_theme.Visible = false;
                 lbl_title.Text = $"Learn English - {Text}";
             }
-            if (this is FrmInfo)
+            if (this is FrmInfo || this is FrmNewKey || this is FrmHotKey)
             {
                 btn_info.Visible = false;
             }
@@ -144,17 +148,35 @@ namespace LearnEnglish.Desktop.Presentation
 
         private async void BaseForm_KeyDown(object sender, KeyEventArgs e)
         {
+            if (this is FrmNewKey)
+            {
+                return;
+            }
+
             switch (GlobalHotKeyService.Instancia.HotKeyMatch(e.KeyCode))
             {
                 case Models.HotKeyType.Close:
                     Close();
                     break;
                 case HotKeyType.ChangeTheme:
-                    await ChangeThemeAsync();
+                    if (this is FrmMain)
+                    {
+                        await ChangeThemeAsync();
+                    }
                     break;
                 default:
                     break;
             }
+        }
+
+        private void BaseForm_Deactivate(object sender, EventArgs e)
+        {
+            this.Opacity = 0F;
+        }
+
+        private void BaseForm_Activated(object sender, EventArgs e)
+        {
+            this.Opacity = 1;
         }
     }
 }

@@ -45,5 +45,6 @@ namespace LearnEnglish.Desktop.Services
     {
         public bool? IsDarkMode { get; set; }
         public List<HotKeyAttribute> HotKeys { get; set; } = new List<HotKeyAttribute>();
+        public List<CustomKey> CustomKeys { get; set; } = new List<CustomKey>();
     }
 }

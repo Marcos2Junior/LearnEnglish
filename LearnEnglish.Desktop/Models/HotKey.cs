@@ -27,7 +27,7 @@
         [HotKey(Close, "Close", Keys.Escape)]
         Close = 1,
 
-        [HotKey(Show, "Show application", Keys.LControlKey, Keys.Space)]
+        [HotKey(Show, "Show application", Keys.Control, Keys.Space)]
         Show = 2,
 
         [HotKey(ChangeTranslate, "Change translate", Keys.F1)]

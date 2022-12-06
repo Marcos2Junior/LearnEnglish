@@ -55,7 +55,15 @@ namespace LearnEnglish.Desktop.Services
 
         public HotKeyType? HotKeyMatch(Keys keyPressed, [CallerMemberName] string call = "")
         {
-            keyPressed = (Keys)keyPressed.ToAvailableKey();
+            if (!LocalStorage.Instancia.LocalStorageInfo.CustomKeys.Any(x => x.Key == keyPressed))
+            {
+                keyPressed = (Keys)keyPressed.ToAvailableKey();
+            }
+
+            if (keyPressed == Keys.None)
+            {
+                return null;
+            }
             LastPressedKeys.Add(new PressedKeys(keyPressed, call));
             LastPressedKeys.RemoveAll(x => x.Date.AddSeconds(1) < DateTime.Now);
             HotKeyType? hotKeyMatch = null;
