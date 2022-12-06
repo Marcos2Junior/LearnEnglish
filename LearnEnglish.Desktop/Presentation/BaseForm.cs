@@ -47,7 +47,7 @@ namespace LearnEnglish.Desktop.Presentation
             dragging = false;
         }
 
-        private async void BaseForm_Load(object sender, EventArgs e)
+        private void BaseForm_Load(object sender, EventArgs e)
         {
             if (this is not FrmMain)
             {
@@ -60,14 +60,7 @@ namespace LearnEnglish.Desktop.Presentation
             }
 
             this.RoundBorder();
-
-            if (LocalStorage.Instancia.LocalStorageInfo.IsDarkMode == null)
-            {
-                LocalStorage.Instancia.LocalStorageInfo.IsDarkMode = DefaultThemeOS.IsDarkMode();
-                await LocalStorage.Instancia.SaveChangesAsync();
-            }
             Theme = LocalStorage.Instancia.LocalStorageInfo.IsDarkMode == true ? new DarkTheme() : new LightTheme();
-
             SetTheme();
         }
 

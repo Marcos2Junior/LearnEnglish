@@ -3,6 +3,7 @@ using LearnEnglish.Desktop.Factorys;
 using LearnEnglish.Desktop.Interfaces;
 using LearnEnglish.Desktop.Services;
 using LearnEnglish.Shared.Dtos;
+using System.Diagnostics;
 using System.Web;
 
 namespace LearnEnglish.Desktop.Presentation
@@ -60,7 +61,6 @@ namespace LearnEnglish.Desktop.Presentation
         private void CreateNewTranslate()
         {
             _frmCreateTextFactory.Create(txt_filter.Text, isTranslated).ShowDialog();
-
         }
 
         private async void txt_filter_TextChanged(object sender, EventArgs e)
@@ -120,6 +120,20 @@ namespace LearnEnglish.Desktop.Presentation
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void FrmMain_Shown(object sender, EventArgs e)
+        {
+            if (Debugger.IsAttached)
+            {
+                return;
+            }
+
+            if (!Program.LaunchedViaStartup)
+            {
+                _ = GlobalHotKeyService.Instancia;
+                Hide();
             }
         }
     }

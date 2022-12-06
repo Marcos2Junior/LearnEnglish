@@ -190,6 +190,7 @@
             this.Name = "FrmMain";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.FrmMain_Load);
+            this.Shown += new System.EventHandler(this.FrmMain_Shown);
             this.VisibleChanged += new System.EventHandler(this.FrmMain_VisibleChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmMain_KeyDown);
             this.Controls.SetChildIndex(this.btn_change_translate, 0);
